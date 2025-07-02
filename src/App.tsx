@@ -1,27 +1,61 @@
-import React from 'react';
+// src/App.tsx
+import React, { useState } from 'react';
+import StatusBar from './components/common/StatusBar';
+import BottomNavigation from './components/common/BottomNavigation';
+import HomePage from './components/home/HomePage';
+import CryptoConverter from './components/converter/CryptoConverter';
+import PortfolioPage from './components/portfolio/PortfolioPage';
+import { useOnlineStatus } from './hooks/useOnlineStatus';
+import { useCryptoData } from './hooks/useCryptoData';
+import { TabType } from './types/crypto';
+import SettingsPage from './components/portfolio/SettingsPage';
 
-function App() {
+const App: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<TabType>('home');
+  const [searchTerm, setSearchTerm] = useState('');
+  const isOnline = useOnlineStatus();
+  const { cryptos, loading, error, isRefreshing, refreshData, retryFetch } = useCryptoData();
+
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case 'home':
+        return (
+          <HomePage
+            cryptos={cryptos}
+            loading={loading}
+            error={error}
+            onRetry={retryFetch}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            onRefresh={refreshData}
+            isRefreshing={isRefreshing}
+          />
+        );
+      case 'converter':
+        return <CryptoConverter cryptos={cryptos} />;
+      case 'portfolio':
+        return <PortfolioPage />;
+      case 'settings':
+        return <SettingsPage />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="min-h-screen gradient-blue-purple flex items-center justify-center p-4">
-      <div className="card text-center animate-fade-in" style={{maxWidth: '28rem', width: '100%'}}>
-        <div 
-          className="gradient-green-teal rounded-full mx-auto mb-4 flex items-center justify-center" 
-          style={{width: '4rem', height: '4rem'}}
-        >
-          <span className="text-white text-2xl font-bold">✓</span>
-        </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Setup Complete! 🎉
-        </h1>
-        <p className="text-gray-600 mb-6">
-          CSS is working perfectly. Ready to build the crypto tracker!
-        </p>
-        <button className="btn btn-primary">
-          Let's Build the Crypto Tracker! 🚀
-        </button>
+    <div 
+      className="h-screen bg-gray-50 flex flex-col container shadow-2xl relative"
+      style={{ overflow: 'hidden' }}
+    >
+      <StatusBar isOnline={isOnline} />
+      
+      <div className="flex-1 flex flex-col" style={{ overflow: 'hidden' }}>
+        {renderActiveTab()}
       </div>
+      
+      <BottomNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>
   );
-}
+};
 
 export default App;
