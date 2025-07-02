@@ -1,4 +1,4 @@
-// src/components/common/BottomNavigation.tsx - FIXED VERSION
+// src/components/common/BottomNavigation.tsx - ULTRA COMPACT VERSION
 import React from 'react';
 import { TabType } from '../../types/crypto';
 
@@ -14,7 +14,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ activeTab, setActiv
       label: 'Markets',
       gradient: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="20" height="20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16">
           <path d="M3 3v18h18"></path>
           <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
         </svg>
@@ -25,7 +25,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ activeTab, setActiv
       label: 'Convert',
       gradient: 'linear-gradient(135deg, #10b981, #06b6d4)',
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="20" height="20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16">
           <polyline points="16 3 21 3 21 8"></polyline>
           <line x1="4" y1="20" x2="21" y2="3"></line>
           <polyline points="21 16 21 21 16 21"></polyline>
@@ -38,7 +38,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ activeTab, setActiv
       label: 'Portfolio',
       gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="20" height="20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16">
           <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path>
           <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
         </svg>
@@ -49,7 +49,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ activeTab, setActiv
       label: 'Settings',
       gradient: 'linear-gradient(135deg, #6b7280, #374151)',
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="20" height="20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16">
           <circle cx="12" cy="12" r="3"></circle>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
         </svg>
@@ -74,41 +74,49 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ activeTab, setActiv
                 outline: 'none'
               }}
             >
-              {/* Active background indicator */}
+              {/* Ultra Compact Active background indicator */}
               {isActive && (
                 <div 
-                  className="absolute inset-0 rounded-xl opacity-10"
-                  style={{ background: item.gradient }}
+                  className="absolute inset-0 rounded-lg opacity-8"
+                  style={{ background: item.gradient, opacity: 0.08 }}
                 ></div>
               )}
               
-              {/* Icon container */}
+              {/* Ultra Compact Icon container */}
               <div 
                 className="nav-icon relative z-10"
                 style={{
                   background: isActive ? item.gradient : '#f3f4f6',
                   color: isActive ? 'white' : '#6b7280',
-                  boxShadow: isActive ? '0 4px 15px rgba(0, 0, 0, 0.2)' : 'none'
+                  boxShadow: isActive ? '0 2px 8px rgba(0, 0, 0, 0.15)' : 'none'
                 }}
               >
                 {item.icon}
               </div>
               
-              {/* Label */}
+              {/* Ultra Compact Label */}
               <span 
-                className="text-xs font-medium relative z-10"
+                className="relative z-10"
                 style={{
-                  color: isActive ? '#111827' : '#6b7280'
+                  fontSize: '9px', // Reduced from text-xs
+                  fontWeight: '500',
+                  color: isActive ? '#111827' : '#6b7280',
+                  marginTop: '1px'
                 }}
               >
                 {item.label}
               </span>
               
-              {/* Active dot indicator */}
+              {/* Ultra small active dot indicator */}
               {isActive && (
                 <div 
-                  className="absolute top-0 w-1 h-1 rounded-full"
-                  style={{ background: item.gradient }}
+                  className="absolute rounded-full"
+                  style={{ 
+                    top: '1px',
+                    width: '3px', // Reduced from 4px
+                    height: '3px',
+                    background: item.gradient 
+                  }}
                 ></div>
               )}
             </button>

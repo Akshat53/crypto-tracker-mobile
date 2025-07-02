@@ -1,14 +1,13 @@
-// src/App.tsx
+// src/App.tsx - OPTIMIZED VERSION (No Status Bar)
 import React, { useState } from 'react';
-import StatusBar from './components/common/StatusBar';
 import BottomNavigation from './components/common/BottomNavigation';
 import HomePage from './components/home/HomePage';
 import CryptoConverter from './components/converter/CryptoConverter';
 import PortfolioPage from './components/portfolio/PortfolioPage';
+import SettingsPage from './components/portfolio/SettingsPage';
 import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { useCryptoData } from './hooks/useCryptoData';
 import { TabType } from './types/crypto';
-import SettingsPage from './components/portfolio/SettingsPage';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('home');
@@ -43,17 +42,16 @@ const App: React.FC = () => {
   };
 
   return (
-    <div 
-      className="h-screen bg-gray-50 flex flex-col container shadow-2xl relative"
-      style={{ overflow: 'hidden' }}
-    >
-      <StatusBar isOnline={isOnline} />
-      
-      <div className="flex-1 flex flex-col" style={{ overflow: 'hidden' }}>
+    <div className="app-container">
+      {/* Main Content Area - No Status Bar */}
+      <div className="flex-1 flex flex-col overflow-hidden">
         {renderActiveTab()}
       </div>
       
-      <BottomNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* Fixed Bottom Navigation */}
+      <div className="bottom-nav-container">
+        <BottomNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
     </div>
   );
 };

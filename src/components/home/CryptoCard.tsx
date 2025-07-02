@@ -1,4 +1,4 @@
-// src/components/home/CryptoCard.tsx - FIXED VERSION
+// src/components/home/CryptoCard.tsx - COMPACT VERSION
 import React from 'react';
 import { CryptoData } from '../../types/crypto';
 import { formatCurrency, formatCompactNumber } from '../../utils/formatters';
@@ -20,15 +20,15 @@ const PriceChange: React.FC<{ percentage: number; period: string }> = ({ percent
       style={{ 
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '4px',
-        padding: '4px 8px',
-        borderRadius: '6px',
-        fontSize: '11px',
+        gap: '2px',
+        padding: '2px 6px',
+        borderRadius: '4px',
+        fontSize: '9px',
         fontWeight: '600',
         backgroundColor: bgClass,
         color: colorClass,
         border: `1px solid ${borderClass}`,
-        minWidth: '60px',
+        minWidth: '50px',
         justifyContent: 'center'
       }}
     >
@@ -36,8 +36,8 @@ const PriceChange: React.FC<{ percentage: number; period: string }> = ({ percent
         viewBox="0 0 24 24" 
         fill="none" 
         stroke="currentColor" 
-        width="10" 
-        height="10"
+        width="8" 
+        height="8"
       >
         {isPositive ? (
           <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
@@ -51,7 +51,7 @@ const PriceChange: React.FC<{ percentage: number; period: string }> = ({ percent
         )}
       </svg>
       <span>{Math.abs(percentage).toFixed(2)}%</span>
-      <span style={{ opacity: 0.7 }}>{period}</span>
+      <span style={{ opacity: 0.7, fontSize: '8px' }}>{period}</span>
     </div>
   );
 };
@@ -61,23 +61,23 @@ const CryptoCard: React.FC<CryptoCardProps> = ({ crypto, index }) => {
     <div className="crypto-card">
       <div className="flex items-center justify-between">
         {/* Left section - Coin info */}
-        <div className="flex items-center flex-1" style={{ gap: '12px', minWidth: 0 }}>
+        <div className="flex items-center flex-1" style={{ gap: '10px', minWidth: 0 }}>
           <div className="relative flex-shrink-0">
             <img
               src={crypto.image}
               alt={crypto.name}
               style={{
-                width: '40px',
-                height: '40px',
+                width: '32px', // Reduced from 40px
+                height: '32px',
                 borderRadius: '50%',
                 border: '2px solid #f3f4f6'
               }}
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.src = `data:image/svg+xml;base64,${btoa(`
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="20" fill="#F3F4F6"/>
-                    <text x="20" y="24" text-anchor="middle" fill="#9CA3AF" font-size="10" font-weight="bold">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="16" r="16" fill="#F3F4F6"/>
+                    <text x="16" y="20" text-anchor="middle" fill="#9CA3AF" font-size="8" font-weight="bold">
                       ${crypto.symbol.toUpperCase().substring(0, 3)}
                     </text>
                   </svg>
@@ -87,12 +87,12 @@ const CryptoCard: React.FC<CryptoCardProps> = ({ crypto, index }) => {
             <div 
               className="absolute flex items-center justify-center text-white text-xs font-bold rounded-full"
               style={{
-                top: '-6px',
-                left: '-6px',
-                width: '18px',
-                height: '18px',
+                top: '-4px',
+                left: '-4px',
+                width: '14px', // Reduced from 18px
+                height: '14px',
                 background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                fontSize: '10px'
+                fontSize: '8px'
               }}
             >
               {crypto.market_cap_rank}
@@ -104,35 +104,35 @@ const CryptoCard: React.FC<CryptoCardProps> = ({ crypto, index }) => {
               <h3 
                 className="font-bold text-gray-900"
                 style={{ 
-                  fontSize: '16px',
-                  lineHeight: '20px',
+                  fontSize: '14px', // Reduced from 16px
+                  lineHeight: '16px',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  maxWidth: '120px'
+                  maxWidth: '100px'
                 }}
               >
                 {crypto.name}
               </h3>
             </div>
-            <div className="flex items-center" style={{ gap: '6px' }}>
+            <div className="flex items-center" style={{ gap: '4px' }}>
               <span 
                 className="text-gray-500 font-semibold"
                 style={{ 
-                  fontSize: '12px',
+                  fontSize: '10px', // Reduced from 12px
                   textTransform: 'uppercase',
-                  letterSpacing: '0.5px'
+                  letterSpacing: '0.3px'
                 }}
               >
                 {crypto.symbol}
               </span>
               <div style={{
-                width: '3px',
-                height: '3px',
+                width: '2px',
+                height: '2px',
                 backgroundColor: '#d1d5db',
                 borderRadius: '50%'
               }}></div>
-              <span className="text-gray-400" style={{ fontSize: '11px' }}>
+              <span className="text-gray-400" style={{ fontSize: '9px' }}>
                 Vol: {formatCompactNumber(crypto.total_volume).replace('$', '')}
               </span>
             </div>
@@ -140,14 +140,14 @@ const CryptoCard: React.FC<CryptoCardProps> = ({ crypto, index }) => {
         </div>
         
         {/* Right section - Price info */}
-        <div className="text-right flex-shrink-0" style={{ minWidth: '100px' }}>
+        <div className="text-right flex-shrink-0" style={{ minWidth: '80px' }}>
           <div 
-            className="font-bold text-gray-900 mb-2"
-            style={{ fontSize: '16px', lineHeight: '20px' }}
+            className="font-bold text-gray-900 mb-1"
+            style={{ fontSize: '14px', lineHeight: '16px' }}
           >
             {formatCurrency(crypto.current_price)}
           </div>
-          <div className="flex flex-col" style={{ gap: '4px' }}>
+          <div className="flex flex-col" style={{ gap: '2px' }}>
             <PriceChange 
               percentage={crypto.price_change_percentage_24h} 
               period="24h" 
@@ -162,20 +162,20 @@ const CryptoCard: React.FC<CryptoCardProps> = ({ crypto, index }) => {
       
       {/* Additional info bar */}
       <div 
-        className="mt-3 pt-3 flex justify-between items-center"
+        className="mt-2 pt-2 flex justify-between items-center"
         style={{ 
           borderTop: '1px solid #f3f4f6',
-          fontSize: '11px',
+          fontSize: '9px',
           color: '#6b7280'
         }}
       >
-        <span>Market Cap: {formatCompactNumber(crypto.market_cap).replace('$', '$')}</span>
-        <div className="flex items-center" style={{ gap: '4px' }}>
+        <span>Cap: {formatCompactNumber(crypto.market_cap).replace('$', '$')}</span>
+        <div className="flex items-center" style={{ gap: '3px' }}>
           <div 
             className="rounded-full"
             style={{
-              width: '6px',
-              height: '6px',
+              width: '4px',
+              height: '4px',
               backgroundColor: crypto.price_change_percentage_24h > 0 ? '#10b981' : '#ef4444'
             }}
           ></div>
