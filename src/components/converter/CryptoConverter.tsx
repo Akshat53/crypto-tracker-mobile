@@ -29,7 +29,6 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
 
   const swapCryptos = () => {
     const tempFrom = fromCrypto;
-    const tempAmount = amount;
     setFromCrypto(toCrypto);
     setToCrypto(tempFrom);
     setAmount(result);
@@ -40,16 +39,14 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
 
   const PriceChangeIndicator = ({ percentage }: { percentage: number }) => {
     const isPositive = percentage > 0;
-    const color = isPositive ? '#10b981' : '#ef4444';
     
     return (
-      <div className="flex items-center" style={{ gap: '4px', color }}>
+      <div className={`flex items-center gap-1 ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
         <svg 
+          className="w-3 h-3" 
           viewBox="0 0 24 24" 
           fill="none" 
-          stroke="currentColor" 
-          width="12" 
-          height="12"
+          stroke="currentColor"
         >
           {isPositive ? (
             <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
@@ -65,66 +62,45 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
   };
 
   return (
-    <div className="flex-1" style={{ background: 'linear-gradient(180deg, #f9fafb 0%, #ffffff 100%)' }}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
       {/* Header */}
-      <div className="gradient-green-teal px-6 py-8 text-white">
-        <h1 className="text-2xl font-bold mb-2">Currency Converter</h1>
-        <p style={{ color: 'rgba(240, 253, 244, 0.8)' }}>
-          Convert between cryptocurrencies
-        </p>
+      <div className="bg-gradient-to-r from-green-500 to-teal-600 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 text-white">
+        <div className="max-w-md lg:max-w-4xl mx-auto">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Crypto Converter</h1>
+          <p className="text-green-100 text-sm sm:text-base lg:text-lg opacity-90">
+            Convert between cryptocurrencies instantly
+          </p>
+        </div>
       </div>
 
-      <div className="px-6 py-6">
+      <div className="max-w-md lg:max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-8">
         {/* Main Converter Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6" style={{ border: '1px solid #f3f4f6' }}>
+        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden lg:max-w-2xl">
           
           {/* From Section */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-3">From</label>
-            <div 
-              className="rounded-2xl p-4 border-2"
-              style={{ 
-                background: 'linear-gradient(135deg, #f9fafb, #f3f4f6)',
-                borderColor: '#e5e7eb'
-              }}
-            >
-              <div className="flex items-center mb-4" style={{ gap: '12px' }}>
+          <div className="p-6 pb-3">
+            <label className="block text-sm font-semibold text-gray-700 mb-4">From</label>
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-4 border-2 border-gray-200 hover:border-gray-300 transition-all duration-200">
+              <div className="flex items-center gap-3 mb-4">
                 {fromCryptoData && (
                   <div className="relative">
                     <img 
                       src={fromCryptoData.image} 
                       alt={fromCryptoData.name} 
-                      className="rounded-full shadow-lg"
-                      style={{
-                        width: '40px',
-                        height: '40px',
-                        border: '2px solid white'
-                      }}
+                      className="w-10 h-10 rounded-full shadow-md border-2 border-white"
                     />
-                    <div 
-                      className="absolute text-white text-xs font-bold rounded-full flex items-center justify-center"
-                      style={{
-                        top: '-4px',
-                        right: '-4px',
-                        width: '16px',
-                        height: '16px',
-                        backgroundColor: '#3b82f6'
-                      }}
-                    >
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
                       {fromCryptoData.market_cap_rank}
                     </div>
                   </div>
                 )}
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <select
                     value={fromCrypto}
                     onChange={(e) => setFromCrypto(e.target.value)}
-                    className="w-full bg-transparent text-lg font-bold text-gray-900"
-                    style={{ 
-                      border: 'none',
-                      outline: 'none',
-                      cursor: 'pointer'
-                    }}
+                    className="w-full bg-transparent text-lg font-bold text-gray-900 border-none outline-none cursor-pointer truncate"
                   >
                     {cryptos.map((crypto) => (
                       <option key={crypto.id} value={crypto.id}>
@@ -133,8 +109,8 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
                     ))}
                   </select>
                   {fromCryptoData && (
-                    <div className="flex items-center mt-1" style={{ gap: '8px' }}>
-                      <span className="text-sm text-gray-600">
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-sm text-gray-600 font-medium">
                         {formatCurrency(fromCryptoData.current_price)}
                       </span>
                       <PriceChangeIndicator percentage={fromCryptoData.price_change_percentage_24h} />
@@ -147,14 +123,10 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full bg-transparent text-3xl font-bold text-gray-900"
+                className="w-full bg-transparent text-3xl font-bold text-gray-900 border-none outline-none placeholder-gray-400"
                 placeholder="0.00"
                 min="0"
                 step="any"
-                style={{ 
-                  border: 'none',
-                  outline: 'none'
-                }}
               />
               
               {fromCryptoData && (
@@ -166,45 +138,16 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
           </div>
 
           {/* Swap Button */}
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center py-3">
             <button
               onClick={swapCryptos}
-              className="transition shadow-lg hover-lift"
-              style={{
-                width: '56px',
-                height: '56px',
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                borderRadius: '50%',
-                border: 'none',
-                color: 'white',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1) translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1) translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
-              }}
+              className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center text-white group"
             >
               <svg 
+                className="w-6 h-6 transform group-hover:rotate-180 transition-transform duration-500" 
                 viewBox="0 0 24 24" 
                 fill="none" 
-                stroke="currentColor" 
-                width="24" 
-                height="24"
-                className="transition"
-                style={{ transform: 'rotate(0deg)' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'rotate(180deg)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'rotate(0deg)';
-                }}
+                stroke="currentColor"
               >
                 <polyline points="16 3 21 3 21 8"></polyline>
                 <line x1="4" y1="20" x2="21" y2="3"></line>
@@ -215,52 +158,27 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
           </div>
 
           {/* To Section */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">To</label>
-            <div 
-              className="rounded-2xl p-4 border-2"
-              style={{ 
-                background: 'linear-gradient(135deg, #eff6ff, #dbeafe)',
-                borderColor: '#93c5fd'
-              }}
-            >
-              <div className="flex items-center mb-4" style={{ gap: '12px' }}>
+          <div className="p-6 pt-3">
+            <label className="block text-sm font-semibold text-gray-700 mb-4">To</label>
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border-2 border-blue-200 hover:border-blue-300 transition-all duration-200">
+              <div className="flex items-center gap-3 mb-4">
                 {toCryptoData && (
                   <div className="relative">
                     <img 
                       src={toCryptoData.image} 
                       alt={toCryptoData.name} 
-                      className="rounded-full shadow-lg"
-                      style={{
-                        width: '40px',
-                        height: '40px',
-                        border: '2px solid white'
-                      }}
+                      className="w-10 h-10 rounded-full shadow-md border-2 border-white"
                     />
-                    <div 
-                      className="absolute text-white text-xs font-bold rounded-full flex items-center justify-center"
-                      style={{
-                        top: '-4px',
-                        right: '-4px',
-                        width: '16px',
-                        height: '16px',
-                        backgroundColor: '#10b981'
-                      }}
-                    >
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
                       {toCryptoData.market_cap_rank}
                     </div>
                   </div>
                 )}
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <select
                     value={toCrypto}
                     onChange={(e) => setToCrypto(e.target.value)}
-                    className="w-full bg-transparent text-lg font-bold text-gray-900"
-                    style={{ 
-                      border: 'none',
-                      outline: 'none',
-                      cursor: 'pointer'
-                    }}
+                    className="w-full bg-transparent text-lg font-bold text-gray-900 border-none outline-none cursor-pointer truncate"
                   >
                     {cryptos.map((crypto) => (
                       <option key={crypto.id} value={crypto.id}>
@@ -269,8 +187,8 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
                     ))}
                   </select>
                   {toCryptoData && (
-                    <div className="flex items-center mt-1" style={{ gap: '8px' }}>
-                      <span className="text-sm text-gray-600">
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-sm text-gray-600 font-medium">
                         {formatCurrency(toCryptoData.current_price)}
                       </span>
                       <PriceChangeIndicator percentage={toCryptoData.price_change_percentage_24h} />
@@ -279,7 +197,7 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
                 </div>
               </div>
               
-              <div className="text-3xl font-bold text-gray-900 mb-3">
+              <div className="text-3xl font-bold text-gray-900 mb-3 animate-pulse">
                 {result}
               </div>
               
@@ -294,13 +212,13 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
 
         {/* Conversion Rate Card */}
         {fromCryptoData && toCryptoData && (
-          <div className="bg-white rounded-2xl p-4 shadow mb-4" style={{ border: '1px solid #e5e7eb' }}>
+          <div className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100 mt-4 hover:shadow-xl transition-shadow duration-300 lg:max-w-2xl">
             <div className="flex items-center justify-between">
-              <div className="flex items-center" style={{ gap: '8px' }}>
-                <span className="text-gray-600 font-medium">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600 font-medium text-sm">
                   1 {fromCryptoData.symbol.toUpperCase()}
                 </span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16" color="#9ca3af">
+                <svg className="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
               </div>
@@ -312,34 +230,63 @@ const CryptoConverter: React.FC<CryptoConverterProps> = ({ cryptos }) => {
         )}
 
         {/* Quick Convert Buttons */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+        <div className="grid grid-cols-4 gap-2 mt-4 lg:max-w-2xl">
           {['0.1', '0.5', '1', '10'].map((value) => (
             <button
               key={value}
               onClick={() => setAmount(value)}
-              className={`py-2 px-3 rounded-xl text-sm font-medium transition ${
-                amount === value ? 'text-white shadow-lg' : 'hover-lift'
+              className={`py-3 px-3 rounded-xl text-sm font-semibold transition-all duration-200 transform hover:scale-105 ${
+                amount === value 
+                  ? 'bg-blue-500 text-white shadow-lg' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
               }`}
-              style={{
-                background: amount === value ? '#3b82f6' : '#f3f4f6',
-                color: amount === value ? 'white' : '#374151',
-                border: 'none',
-                cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                if (amount !== value) {
-                  e.currentTarget.style.backgroundColor = '#e5e7eb';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (amount !== value) {
-                  e.currentTarget.style.backgroundColor = '#f3f4f6';
-                }
-              }}
             >
               {value}
             </button>
           ))}
+        </div>
+
+        {/* Market Info */}
+        <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl border border-green-100 lg:max-w-2xl">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Live Rates</span>
+          </div>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            Rates are updated in real-time from multiple exchanges. 
+            Conversion rates may vary slightly due to market volatility.
+          </p>
+        </div>
+          </div>
+
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block lg:col-span-4 space-y-6">
+            {/* Quick Stats */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Market Stats</h3>
+              <div className="space-y-4">
+                {cryptos.slice(0, 3).map((crypto) => (
+                  <div key={crypto.id} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <img src={crypto.image} alt={crypto.name} className="w-6 h-6 rounded-full" />
+                      <span className="font-medium text-sm">{crypto.symbol.toUpperCase()}</span>
+                    </div>
+                    <span className="text-sm font-semibold">{formatCurrency(crypto.current_price)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Conversion History */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Recent Conversions</h3>
+              <div className="space-y-3">
+                <div className="text-xs text-gray-500 text-center py-8">
+                  Your conversion history will appear here
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

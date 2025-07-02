@@ -1,185 +1,118 @@
-// src/components/home/CryptoCard.tsx - COMPACT VERSION
+// src/components/home/CryptoCard.tsx - Mobile-Optimized Version
 import React from 'react';
 import { CryptoData } from '../../types/crypto';
-import { formatCurrency, formatCompactNumber } from '../../utils/formatters';
 
 interface CryptoCardProps {
   crypto: CryptoData;
   index: number;
 }
 
-const PriceChange: React.FC<{ percentage: number; period: string }> = ({ percentage, period }) => {
-  const isPositive = percentage > 0;
-  const colorClass = isPositive ? '#16a34a' : '#dc2626';
-  const bgClass = isPositive ? '#f0fdf4' : '#fef2f2';
-  const borderClass = isPositive ? '#bbf7d0' : '#fecaca';
-
-  return (
-    <div 
-      className={`price-change ${isPositive ? 'positive' : 'negative'}`}
-      style={{ 
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '2px',
-        padding: '2px 6px',
-        borderRadius: '4px',
-        fontSize: '9px',
-        fontWeight: '600',
-        backgroundColor: bgClass,
-        color: colorClass,
-        border: `1px solid ${borderClass}`,
-        minWidth: '50px',
-        justifyContent: 'center'
-      }}
-    >
-      <svg 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        width="8" 
-        height="8"
-      >
-        {isPositive ? (
-          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-        ) : (
-          <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
-        )}
-        {isPositive ? (
-          <polyline points="17 6 23 6 23 12"></polyline>
-        ) : (
-          <polyline points="17 18 23 18 23 12"></polyline>
-        )}
-      </svg>
-      <span>{Math.abs(percentage).toFixed(2)}%</span>
-      <span style={{ opacity: 0.7, fontSize: '8px' }}>{period}</span>
-    </div>
-  );
-};
-
 const CryptoCard: React.FC<CryptoCardProps> = ({ crypto, index }) => {
+  const formatPrice = (price: number) => {
+    if (price >= 1) {
+      return `$${price.toFixed(2)}`;
+    } else if (price >= 0.01) {
+      return `$${price.toFixed(4)}`;
+    } else {
+      return `$${price.toFixed(8)}`;
+    }
+  };
+
+  const formatMarketCap = (marketCap: number) => {
+    if (marketCap >= 1e12) {
+      return `$${(marketCap / 1e12).toFixed(2)}T`;
+    } else if (marketCap >= 1e9) {
+      return `$${(marketCap / 1e9).toFixed(2)}B`;
+    } else if (marketCap >= 1e6) {
+      return `$${(marketCap / 1e6).toFixed(2)}M`;
+    } else {
+      return `$${(marketCap / 1e3).toFixed(2)}K`;
+    }
+  };
+
+  const formatVolume = (volume: number) => {
+    if (volume >= 1e9) {
+      return `$${(volume / 1e9).toFixed(2)}B`;
+    } else if (volume >= 1e6) {
+      return `$${(volume / 1e6).toFixed(2)}M`;
+    } else {
+      return `$${(volume / 1e3).toFixed(2)}K`;
+    }
+  };
+
+  const isPositive = crypto.price_change_percentage_24h >= 0;
+
   return (
-    <div className="crypto-card">
-      <div className="flex items-center justify-between">
-        {/* Left section - Coin info */}
-        <div className="flex items-center flex-1" style={{ gap: '10px', minWidth: 0 }}>
-          <div className="relative flex-shrink-0">
-            <img
-              src={crypto.image}
-              alt={crypto.name}
-              style={{
-                width: '32px', // Reduced from 40px
-                height: '32px',
-                borderRadius: '50%',
-                border: '2px solid #f3f4f6'
-              }}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = `data:image/svg+xml;base64,${btoa(`
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="16" cy="16" r="16" fill="#F3F4F6"/>
-                    <text x="16" y="20" text-anchor="middle" fill="#9CA3AF" font-size="8" font-weight="bold">
-                      ${crypto.symbol.toUpperCase().substring(0, 3)}
-                    </text>
-                  </svg>
-                `)}`;
-              }}
-            />
-            <div 
-              className="absolute flex items-center justify-center text-white text-xs font-bold rounded-full"
-              style={{
-                top: '-4px',
-                left: '-4px',
-                width: '14px', // Reduced from 18px
-                height: '14px',
-                background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-                fontSize: '8px'
-              }}
-            >
-              {crypto.market_cap_rank}
-            </div>
-          </div>
-          
+    <div className="w-full max-w-full bg-white rounded-2xl p-4 shadow-md border border-gray-100 hover:shadow-lg transition-all duration-200 crypto-card">
+      <div className="flex items-center gap-3 w-full min-w-0">
+        {/* Crypto Icon and Info */}
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <img 
+            src={crypto.image} 
+            alt={crypto.name} 
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex-shrink-0"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = `https://via.placeholder.com/48x48/3B82F6/FFFFFF?text=${crypto.symbol.charAt(0)}`;
+            }}
+          />
           <div className="flex-1 min-w-0">
-            <div className="flex items-center mb-1">
-              <h3 
-                className="font-bold text-gray-900"
-                style={{ 
-                  fontSize: '14px', // Reduced from 16px
-                  lineHeight: '16px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  maxWidth: '100px'
-                }}
-              >
-                {crypto.name}
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-bold text-gray-900 text-sm sm:text-base truncate">
+                {crypto.symbol.toUpperCase()}
               </h3>
-            </div>
-            <div className="flex items-center" style={{ gap: '4px' }}>
-              <span 
-                className="text-gray-500 font-semibold"
-                style={{ 
-                  fontSize: '10px', // Reduced from 12px
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.3px'
-                }}
-              >
-                {crypto.symbol}
-              </span>
-              <div style={{
-                width: '2px',
-                height: '2px',
-                backgroundColor: '#d1d5db',
-                borderRadius: '50%'
-              }}></div>
-              <span className="text-gray-400" style={{ fontSize: '9px' }}>
-                Vol: {formatCompactNumber(crypto.total_volume).replace('$', '')}
+              <span className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded-full">
+                #{crypto.market_cap_rank}
               </span>
             </div>
+            <p className="text-xs sm:text-sm text-gray-600 truncate">
+              {crypto.name}
+            </p>
           </div>
         </div>
-        
-        {/* Right section - Price info */}
-        <div className="text-right flex-shrink-0" style={{ minWidth: '80px' }}>
-          <div 
-            className="font-bold text-gray-900 mb-1"
-            style={{ fontSize: '14px', lineHeight: '16px' }}
-          >
-            {formatCurrency(crypto.current_price)}
+
+        {/* Price and Change */}
+        <div className="text-right flex-shrink-0">
+          <div className="font-bold text-gray-900 text-sm sm:text-base mb-1">
+            {formatPrice(crypto.current_price)}
           </div>
-          <div className="flex flex-col" style={{ gap: '2px' }}>
-            <PriceChange 
-              percentage={crypto.price_change_percentage_24h} 
-              period="24h" 
-            />
-            <PriceChange 
-              percentage={crypto.price_change_percentage_7d_in_currency} 
-              period="7d" 
-            />
+          <div className={`text-xs sm:text-sm font-semibold flex items-center justify-end gap-1 ${
+            isPositive ? 'text-green-600' : 'text-red-600'
+          }`}>
+            <span className={`text-xs ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+              {isPositive ? '↗' : '↘'}
+            </span>
+            {isPositive ? '+' : ''}{crypto.price_change_percentage_24h.toFixed(2)}%
           </div>
         </div>
       </div>
-      
-      {/* Additional info bar */}
-      <div 
-        className="mt-2 pt-2 flex justify-between items-center"
-        style={{ 
-          borderTop: '1px solid #f3f4f6',
-          fontSize: '9px',
-          color: '#6b7280'
-        }}
-      >
-        <span>Cap: {formatCompactNumber(crypto.market_cap).replace('$', '$')}</span>
-        <div className="flex items-center" style={{ gap: '3px' }}>
-          <div 
-            className="rounded-full"
-            style={{
-              width: '4px',
-              height: '4px',
-              backgroundColor: crypto.price_change_percentage_24h > 0 ? '#10b981' : '#ef4444'
-            }}
-          ></div>
-          <span>Live</span>
+
+      {/* Additional Info - Mobile Responsive */}
+      <div className="mt-4 pt-3 border-t border-gray-100">
+        <div className="grid grid-cols-2 gap-4 text-xs">
+          <div>
+            <div className="text-gray-500 mb-1">Market Cap</div>
+            <div className="font-semibold text-gray-900 truncate">
+              {formatMarketCap(crypto.market_cap)}
+            </div>
+          </div>
+          <div>
+            <div className="text-gray-500 mb-1">Volume (24h)</div>
+            <div className="font-semibold text-gray-900 truncate">
+              {formatVolume(crypto.total_volume)}
+            </div>
+          </div>
+        </div>
+
+        {/* Price Chart Indicator */}
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${isPositive ? 'bg-green-400' : 'bg-red-400'} animate-pulse`}></div>
+            <span className="text-xs text-gray-500">Live</span>
+          </div>
+          <div className="text-xs text-gray-400">
+            Vol: {formatVolume(crypto.total_volume)}
+          </div>
         </div>
       </div>
     </div>
