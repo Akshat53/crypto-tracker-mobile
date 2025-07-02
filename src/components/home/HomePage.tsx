@@ -233,10 +233,7 @@ const HomePage: React.FC<HomePageProps> = ({
               <div className="flex-shrink-0 mb-6">
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                 
-                {/* Market Stats */}
-                {!searchTerm && !loading && !error && cryptos.length > 0 && (
-                  <MarketStats cryptos={cryptos} />
-                )}
+             
               </div>
               
               {/* Main Scrollable Content */}
