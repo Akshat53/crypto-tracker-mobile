@@ -150,10 +150,8 @@ const HomePage: React.FC<HomePageProps> = ({
             <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           </div>
           
-          {/* Market Stats - only show when not searching */}
-          {!searchTerm && !loading && !error && cryptos.length > 0 && (
-            <MarketStats cryptos={cryptos} />
-          )}
+          
+       
         </div>
         
         {/* Mobile Scrollable Content */}
