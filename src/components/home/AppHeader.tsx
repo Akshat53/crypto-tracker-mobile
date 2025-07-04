@@ -8,7 +8,7 @@ interface AppHeaderProps {
 
 const AppHeader: React.FC<AppHeaderProps> = ({ onRefresh, isRefreshing }) => {
   return (
-    <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 px-4 sm:px-6 lg:px-8 py-4 lg:py-6 text-white">
+    <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 px-4 sm:px-6 lg:px-8 py-2 lg:py-3text-white">
       <div className="max-w-md lg:max-w-7xl mx-auto">
         {/* Desktop Header Layout */}
         <div className="hidden lg:flex lg:items-center lg:justify-between lg:mb-6">
