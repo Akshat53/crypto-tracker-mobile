@@ -210,7 +210,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ activeTab, setActiv
             <div className="text-center xl:text-left">
               <div className="hidden xl:block">
                 <p className="text-xs text-gray-500 mb-1">Version 1.0.0</p>
-                <p className="text-xs text-gray-400">© 2024 CryptoTracker</p>
+                <p className="text-xs text-gray-400">© 2025 CryptoTracker</p>
               </div>
               <div className="xl:hidden">
                 <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
